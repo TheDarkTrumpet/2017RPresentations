@@ -151,3 +151,5 @@ $RECYCLE.BIN/
 # Electronic syllabus generated javascript files
 ElectronicSyllabus.WebUI/Scripts/esyllabus/*.js
 ElectronicSyllabus.WebUI/Scripts/esyllabus/*.map
+packrat/lib*/
+.Rproj.user
