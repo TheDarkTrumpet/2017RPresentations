@@ -6,9 +6,17 @@ library("plyr")
 library("ggplot2")
 library("RODBC")
 
+# Read from a SQL Database
 connectionString <- "driver=freetds;DSN=SqlServer;Database=WorldWideImporters;UID=sa;Pwd=pAssw04d"
 dbhandle <- odbcDriverConnect(connectionString)
-allData <- sqlQuery(dbhandle, 'select c.CityName, c.Location AS CityLocation, c.LatestRecordedPopulation as CityPopulation,
-  s.StateProvinceCode, s.StateProvinceName, s.Border as StateBorder, s.LatestRecordedPopulation as StatePopulation
+allData <- sqlQuery(dbhandle, 'select c.CityName, c.LatestRecordedPopulation as CityPopulation,
+  s.StateProvinceCode, s.StateProvinceName, s.LatestRecordedPopulation as StatePopulation
   from Application.Cities c left join Application.StateProvinces s ON c.StateProvinceId = s.StateProvinceID')
 close(dbhandle)
+
+# Write to a file
+write.table(allData, file="/home/rstudio/src/Data/citylocs.csv", sep=",",qmethod="double")
+
+# Read from a file
+csvData <- read.table("/home/rstudio/src/Data/citylocs.csv", header=TRUE, sep=",", row.names=1)
+
