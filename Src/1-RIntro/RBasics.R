@@ -20,3 +20,6 @@ write.table(allData, file="/home/rstudio/src/Data/citylocs.csv", sep=",",qmethod
 # Read from a file
 csvData <- read.table("/home/rstudio/src/Data/citylocs.csv", header=TRUE, sep=",", row.names=1)
 
+# Summary Information
+summary(csvData)
+StateCounts <- unique(data.frame(State=csvData$StateProvinceName, Population=csvData$StatePopulation))
