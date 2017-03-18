@@ -22,4 +22,29 @@ csvData <- read.table("/home/rstudio/src/Data/citylocs.csv", header=TRUE, sep=",
 
 # Summary Information
 summary(csvData)
+
+# Basic Graph
 StateCounts <- unique(data.frame(State=csvData$StateProvinceName, Population=csvData$StatePopulation))
+StateGraph <- qplot(data = StateCounts, x=State, y=Population, fill=Population, geom="blank"
+  ) + coord_flip() + geom_bar(stat = "identity")
+plot(StateGraph)
+
+# Remove Scientific Notation
+options(scipen=999)
+
+# Sort the data set - two ways
+SortedStateCounts <- StateCounts[order(StateCounts$Population),]
+
+attach(StateCounts)
+SortedStateCounts <- StateCounts[order(Population)]
+detach(StateCounts)
+
+# Order it by State (not in reverse order) ### WORKING ON###
+StateGraph <- qplot(data = order_by(State, Population, StateCounts), State, y=Population, fill=Population, geom="blank"
+) + coord_flip() + geom_bar(stat = "identity")
+plot(StateGraph)
+
+# Graph sorted by Population
+StateGraph <- qplot(data = SortedStateCounts, x=reorder(State, -Population), y=Population, fill=Population, geom="blank"
+) + coord_flip() + geom_bar(stat = "identity")
+plot(StateGraph)
