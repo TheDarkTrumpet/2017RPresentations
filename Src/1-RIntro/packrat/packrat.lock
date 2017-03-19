@@ -43,6 +43,11 @@ Source: CRAN
 Version: 0.1
 Hash: 0afb92b59b02593c70ff8046700ba9d3
 
+Package: chron
+Source: CRAN
+Version: 2.3-47
+Hash: d25d96d908cd21080f24c89eed4c80a0
+
 Package: colorspace
 Source: CRAN
 Version: 1.2-7
@@ -52,6 +57,12 @@ Package: curl
 Source: CRAN
 Version: 2.2
 Hash: 4533829fb0026bd0dea77ba8f1612d37
+
+Package: data.table
+Source: CRAN
+Version: 1.9.6
+Hash: f92ef1f73afa43bf6fd69a22f3794abd
+Requires: chron
 
 Package: devtools
 Source: CRAN

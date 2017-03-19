@@ -39,12 +39,20 @@ attach(StateCounts)
 SortedStateCounts <- StateCounts[order(Population)]
 detach(StateCounts)
 
-# Order it by State (not in reverse order) ### WORKING ON###
-StateGraph <- qplot(data = order_by(State, Population, StateCounts), State, y=Population, fill=Population, geom="blank"
-) + coord_flip() + geom_bar(stat = "identity")
-plot(StateGraph)
-
 # Graph sorted by Population
 StateGraph <- qplot(data = SortedStateCounts, x=reorder(State, -Population), y=Population, fill=Population, geom="blank"
 ) + coord_flip() + geom_bar(stat = "identity")
 plot(StateGraph)
+
+# Small introduction to DataTable
+library(data.table)
+StateCountsTable <- data.table(StateCounts)
+StateCountsTable <- StateCountsTable[order(-rank(State))]
+
+### Fill in more examples here ###
+
+# Order it by State (not in reverse order)
+StateGraph <- qplot(data = StateCountsTable, x=State, y=Population, fill=Population, geom="blank"
+) + coord_flip() + scale_x_discrete(limits = rev(levels(StateCountsTable$State))) + geom_bar(stat = "identity")
+plot(StateGraph)
+
