@@ -56,3 +56,9 @@ StateGraph <- qplot(data = StateCountsTable, x=State, y=Population, fill=Populat
 ) + coord_flip() + scale_x_discrete(limits = rev(levels(StateCountsTable$State))) + geom_bar(stat = "identity")
 plot(StateGraph)
 
+# A few States
+AllStateCities <- data.table(allData)
+interestedCols <- c("StateProvinceCode", "CityPopulation", "CityName")
+IAMN <- AllStateCities[AllStateCities$StateProvinceCode == "IA" | AllStateCities$StateProvinceCode == "MN", interestedCols, with=FALSE]
+IAMNOrder <- IAMN[order(-StateProvinceCode,-CityPopulation)]
+IAMNTop5 <- rbind(head(IAMNOrder[IAMNOrder$StateProvinceCode == "IA"],10), head(IAMNOrder[IAMNOrder$StateProvinceCode == "MN"], 10))
