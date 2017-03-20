@@ -61,9 +61,18 @@ AllStateCities <- data.table(allData)
 interestedCols <- c("StateProvinceCode", "CityPopulation", "CityName")
 IAMN <- AllStateCities[AllStateCities$StateProvinceCode == "IA" | AllStateCities$StateProvinceCode == "MN", interestedCols, with=FALSE]
 IAMNOrder <- IAMN[order(-StateProvinceCode,-CityPopulation)]
-IAMNTop5 <- rbind(head(IAMNOrder[IAMNOrder$StateProvinceCode == "IA"],10), head(IAMNOrder[IAMNOrder$StateProvinceCode == "MN"], 10))
+IAMNTop10 <- rbind(head(IAMNOrder[IAMNOrder$StateProvinceCode == "IA"],10), head(IAMNOrder[IAMNOrder$StateProvinceCode == "MN"], 10))
 
-Top10Graph <- qplot(data = IAMNTop5, x=CityName, y=CityPopulation, fill=CityPopulation, geom="blank"
-) + coord_flip() + scale_x_discrete(limits = rev(levels(IAMNTop5$CityName))) + geom_bar(stat = "identity")
-Top10Graph + facet_wrap(State ~ .)
-plot(Top10Graph)
+# top_n -- attach weight function at the end may make all this simpler
+# dtplyr
+# dplyr - newer than plyr (Keeps everything in dataframe, less conversion)
+IAMNTop10$StateProvinceCode <- factor(IAMNTop10$StateProvinceCode)
+IAMNTop10$CityName <- factor(IAMNTop10$CityName)
+
+Top10Graph <- ggplot(data = IAMNTop10, 
+                    aes(x=CityName, y=CityPopulation, group=StateProvinceCode, fill=CityPopulation), 
+                    geom="blank") + 
+  scale_x_discrete(limits = rev(levels(IAMNTop10$CityName))) + 
+  geom_bar(stat = "identity")
+Top10Graph + facet_grid(StateProvinceCode ~ ., scales="free", space="free", drop=TRUE) + coord_flip()
+# plot(Top10Graph)
