@@ -87,6 +87,12 @@ Version: 0.5.0
 Hash: 03e5e71801c0f49217922e2cd4680f06
 Requires: BH, DBI, R6, Rcpp, assertthat, lazyeval, magrittr, tibble
 
+Package: dtplyr
+Source: CRAN
+Version: 0.0.1
+Hash: b50baa93cdf537e714e3f200c26f516f
+Requires: data.table, dplyr, lazyeval
+
 Package: ggplot2
 Source: CRAN
 Version: 2.1.0

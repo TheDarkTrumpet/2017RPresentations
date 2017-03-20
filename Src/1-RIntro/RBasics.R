@@ -66,13 +66,14 @@ IAMNTop10 <- rbind(head(IAMNOrder[IAMNOrder$StateProvinceCode == "IA"],10), head
 # top_n -- attach weight function at the end may make all this simpler
 # dtplyr
 # dplyr - newer than plyr (Keeps everything in dataframe, less conversion)
-IAMNTop10$StateProvinceCode <- factor(IAMNTop10$StateProvinceCode)
-IAMNTop10$CityName <- factor(IAMNTop10$CityName)
+IAMNTop10$StateProvinceCode <- as.character(IAMNTop10$StateProvinceCode)
+IAMNTop10$CityName <- as.character(IAMNTop10$CityName)
+IAMNTop10$CityPopulation <- as.numeric(IAMNTop10$CityPopulation)
 
 Top10Graph <- ggplot(data = IAMNTop10, 
-                    aes(x=CityName, y=CityPopulation, group=StateProvinceCode, fill=CityPopulation), 
-                    geom="blank") + 
+                    aes(x=CityName, y=CityPopulation), 
+                    ) + 
   scale_x_discrete(limits = rev(levels(IAMNTop10$CityName))) + 
   geom_bar(stat = "identity")
-Top10Graph + facet_grid(StateProvinceCode ~ ., scales="free", space="free", drop=TRUE) + coord_flip()
+Top10Graph + facet_grid(StateProvinceCode ~ ., scales="free", space="free") + xlab("City") + ylab("City Population") + coord_flip()
 # plot(Top10Graph)
