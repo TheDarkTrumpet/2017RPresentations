@@ -59,8 +59,9 @@ plot(StateGraph)
 # A few States
 AllStateCities <- data.table(allData)
 interestedCols <- c("StateProvinceCode", "CityPopulation", "CityName")
-IAMN <- AllStateCities[AllStateCities$StateProvinceCode == "IA" | AllStateCities$StateProvinceCode == "MN" | AllStateCities$StateProvinceCode == "CA"
-                       | ALLStateCities$StateProvinceCode="TX", interestedCols, with=FALSE]
+IAMN <- data.table(AllStateCities[AllStateCities$StateProvinceCode == "IA" | AllStateCities$StateProvinceCode == "MN" | AllStateCities$StateProvinceCode == "CA"
+                       | AllStateCities$StateProvinceCode=="TX", interestedCols, with = FALSE])
+IAMN[is.na(IAMN)] <- 0
 IAMNOrder <- IAMN[order(-StateProvinceCode,-CityPopulation)]
 IAMNTop10 <- rbind(head(IAMNOrder[IAMNOrder$StateProvinceCode == "IA"],10), head(IAMNOrder[IAMNOrder$StateProvinceCode == "MN"], 10),
                    head(IAMNOrder[IAMNOrder$StateProvinceCode == "CA"],10), head(IAMNOrder[IAMNOrder$StateProvinceCode == "TX"],10))
@@ -74,15 +75,20 @@ IAMNTop10$CityPopulation <- as.numeric(IAMNTop10$CityPopulation)
 
 Top10GraphIA <- ggplot(data = IAMNTop10[IAMNTop10$StateProvinceCode == "IA",], 
                     aes(x=CityName, y=CityPopulation)) + 
-  geom_bar(stat = "identity") + xlab("City") + ylab("City Population") + coord_flip()
-Top10GraphMN <- ggplot(data = IAMNTop10[IAMNTop10$StateProvinceCode == "NM",], 
+  geom_bar(stat = "identity") + xlab("City") + ylab("City Population") + coord_flip() +
+  ggtitle("Iowa")
+Top10GraphMN <- ggplot(data = IAMNTop10[IAMNTop10$StateProvinceCode == "MN",], 
          aes(x=CityName, y=CityPopulation)) +
-  geom_bar(stat = "identity") + xlab("City") + ylab("City Population") + coord_flip()
+  geom_bar(stat = "identity") + xlab("City") + ylab("City Population") + coord_flip() +
+  ggtitle("Minneapolis")
 Top10GraphCA <- ggplot(data = IAMNTop10[IAMNTop10$StateProvinceCode == "CA",], 
                        aes(x=CityName, y=CityPopulation)) +
-  geom_bar(stat = "identity") + xlab("City") + ylab("City Population") + coord_flip()
+  geom_bar(stat = "identity") + xlab("City") + ylab("City Population") + coord_flip() +
+  ggplot("California")
 Top10GraphTX <- ggplot(data = IAMNTop10[IAMNTop10$StateProvinceCode == "TX",], 
                        aes(x=CityName, y=CityPopulation)) +
-  geom_bar(stat = "identity") + xlab("City") + ylab("City Population") + coord_flip()
+  geom_bar(stat = "identity") + xlab("City") + ylab("City Population") + coord_flip() +
+  ggplot("Texas")
 
-grid.arrange(Top10GraphIA, Top10GraphNM, Top10GraphCA, Top10GraphTX)
+library(gridExtra)
+grid.arrange(Top10GraphIA, Top10GraphMN, Top10GraphCA, Top10GraphTX)
