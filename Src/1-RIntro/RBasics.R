@@ -2,9 +2,13 @@ install.packages("plyr")
 install.packages("ggplot2")
 install.packages("RODBC")
 
-library("plyr")
-library("ggplot2")
-library("RODBC")
+library(plyr)
+library(ggplot2)
+library(RODBC)
+library(gridExtra)
+library(data.table)
+library(dtplyr)
+library(dplyr)
 
 # Read from a SQL Database
 connectionString <- "driver=freetds;DSN=SqlServer;Database=WorldWideImporters;UID=sa;Pwd=pAssw04d"
@@ -90,5 +94,8 @@ Top10GraphTX <- ggplot(data = IAMNTop10[IAMNTop10$StateProvinceCode == "TX",],
   geom_bar(stat = "identity") + xlab("City") + ylab("City Population") + coord_flip() +
   ggplot("Texas")
 
-library(gridExtra)
-grid.arrange(Top10GraphIA, Top10GraphMN, Top10GraphCA, Top10GraphTX)
+
+grid.arrange(Top10GraphIA, Top10GraphMN, Top10GraphCA, Top10GraphTX, padding=unit(1,"line"))
+
+# Add a table
+tableGrob()
