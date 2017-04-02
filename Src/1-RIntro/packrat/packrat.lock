@@ -115,6 +115,10 @@ Source: CRAN
 Version: 0.2.0
 Hash: cd78381a9d3fea966ac39bd0daaf5554
 
+Package: hms
+Source: CRAN
+Version: 0.2
+
 Package: httr
 Source: CRAN
 Version: 1.2.1
@@ -183,6 +187,11 @@ Source: CRAN
 Version: 1.8.4
 Hash: 75ca080b10a9314a9b293964331e5df7
 Requires: Rcpp
+
+Package: readr
+Source: CRAN
+Version: 1.0.0
+Requires: BH, R6, Rcpp, curl, tibble, hms
 
 Package: reshape2
 Source: CRAN

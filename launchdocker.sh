@@ -12,7 +12,7 @@ docker run -v '/Users/dthole/Programming/r-shiny-docker:/data' -e 'ACCEPT_EULA=Y
 docker run -d --name shinyserver -p 3838:3838 --link mssql:mssql -v '/Users/dthole/Programming/r-shiny-docker/Shiny:/srv/shiny-server/' -v '/Users/dthole/Programming/r-shiny-docker/Shiny.Logs:/var/log/shiny-server/' rocker/shiny
 
 # Launch rstudioweb
-docker run -v '/Users/dthole/Programming/r-shiny-docker:/home/rstudio/src' --name rstudioweb --link mssql:mssql -d -p 8787:8787 dthole/shiny:v1
+docker run -v '/Users/dthole/Programming/r-shiny-docker:/home/rstudio/src' --name rstudioweb --link mssql:mssql -d -p 8787:8787 dthole/rstudio:v1
 
 echo "Rstudio Server: http://localhost:8787"
 echo "Shiny Server: http://localhost:3838"
