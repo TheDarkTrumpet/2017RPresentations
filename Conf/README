@@ -1,0 +1,5 @@
+These are configuration files that may help you if trying to run the docker setup I have here.
+
+/etc/freetds/freetds.conf
+/etc/odbc.ini
+/etc/odbcinst.ini
