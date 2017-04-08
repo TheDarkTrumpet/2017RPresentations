@@ -8,6 +8,9 @@ docker rm rstudioweb
 # Launch SQL Server
 docker run -v '/Users/dthole/Programming/r-shiny-docker:/data' -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=pAssw04d' --name mssql -p 1433:1433 -d microsoft/mssql-server-linux
 
+# Restore database backup
+docker run -v '/Users/dthole/Programming/r-shiny-docker/:/data/' --link mssql:mssql -it fabiang/sqlcmd -S mssql -U sa -P pAssw04d '-i/data/Data/RestoreDatabase.sql'
+
 # Launch Shiny Server
 docker run -d --name shinyserver -p 3838:3838 --link mssql:mssql -v '/Users/dthole/Programming/r-shiny-docker/Shiny:/srv/shiny-server/' -v '/Users/dthole/Programming/r-shiny-docker/Shiny.Logs:/var/log/shiny-server/' dthole/shiny:v1
 
