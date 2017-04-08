@@ -1,28 +1,29 @@
-#
-# This is the user-interface definition of a Shiny web application. You can
-# run the application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-# 
-#    http://shiny.rstudio.com/
-#
-
 library(shiny)
+library(RODBC)
+library(dplyr)
+
+getStateList <- function() {
+  connectionString <- "driver=freetds;DSN=SqlServer;Database=WorldWideImporters;UID=sa;Pwd=pAssw04d"
+  dbhandle <- odbcDriverConnect(connectionString)
+  allData <- sqlQuery(dbhandle, 'select StateProvinceCode, StateProvinceName from Application.StateProvinces')
+  close(dbhandle)
+  # as.list(setNames(as.character(allData$StateProvinceCode), allData$StateProvinceName))
+  structure(as.character(allData$StateProvinceCode), names = as.character(allData$StateProvinceName))
+}
 
 # Define UI for application that draws a histogram
 shinyUI(fluidPage(
   
   # Application title
-  titlePanel("Old Faithful Geyser Data"),
+  titlePanel("Population by State"),
   
   # Sidebar with a slider input for number of bins 
   sidebarLayout(
     sidebarPanel(
-       sliderInput("bins",
-                   "Number of bins:",
-                   min = 1,
-                   max = 50,
-                   value = 30)
+      checkboxGroupInput("states", 
+                         label = h3("States to Report on"), 
+                         choices = getStateList(),
+                         selected = 1)
     ),
     
     # Show a plot of the generated distribution
