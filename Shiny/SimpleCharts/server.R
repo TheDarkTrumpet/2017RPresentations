@@ -35,29 +35,62 @@ getAllCityPopulations <- function() {
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
   output$generalStateInformation <- reactivePlot(function() {
-    statePopulations <- getAllStatePopulations()
-    stateSubset <- statePopulations %>%
-      filter(StateProvinceName %in% input$states)
-    stateSubsetGraph <- qplot(data = stateSubset, x=reorder(StateProvinceName, -StatePopulation), y=StatePopulation, fill=StatePopulation, geom="blank") + coord_flip() + geom_bar(stat = "identity")
-    print(stateSubsetGraph)
+    if(length(input$states) > 0)
+    {
+      statePopulations <- getAllStatePopulations()
+      stateSubset <- statePopulations %>%
+        filter(StateProvinceName %in% input$states)
+      stateSubsetGraph <- ggplot(data = stateSubset, aes(x=reorder(StateProvinceName, -StatePopulation), y=StatePopulation)) + 
+        geom_bar(stat = 'identity') + 
+        coord_flip() + 
+        theme_bw() + 
+        xlab("State") + 
+        ylab("Population")
+      print(stateSubsetGraph)
+    }
   })
   
   output$top5CitiesPerState <- reactivePlot(function() {
-    cityPopulations <- getAllCityPopulations()
-    cityPopulationSubset <- cityPopulations %>%
-      filter(StateProvinceName %in% input$states) %>%
-      group_by(StateProvinceName) %>%
-      top_n(n = 5, CityPopulation) %>%
-      select(StateProvinceName, CityName, CityPopulation, everything()) %>%
-      arrange(StateProvinceName, -CityPopulation) %>%
-      mutate(top = TRUE)
-    cityPlot <- ggplot(cityPopulationSubset, aes(x = CityName, y = CityPopulation)) + 
-      geom_bar(stat = 'identity') + 
-      facet_grid(StateProvinceName ~ ., scales = 'free', space = 'free') + 
-      coord_flip() + 
-      theme_bw() + 
-      xlab("City Name") + 
-      ylab("Population")
-    print(cityPlot)
+    if(length(input$states) > 0)
+    {
+      cityPopulations <- getAllCityPopulations()
+      cityPopulationSubset <- cityPopulations %>%
+        filter(StateProvinceName %in% input$states) %>%
+        group_by(StateProvinceName) %>%
+        top_n(n = 5, CityPopulation) %>%
+        select(StateProvinceName, CityName, CityPopulation, everything()) %>%
+        arrange(StateProvinceName, -CityPopulation) %>%
+        mutate(top = TRUE)
+      cityPlot <- ggplot(cityPopulationSubset, aes(x = CityName, y = CityPopulation)) + 
+        geom_bar(stat = 'identity') + 
+        facet_grid(StateProvinceName ~ ., scales = 'free', space = 'free') + 
+        coord_flip() + 
+        theme_bw() + 
+        xlab("City Name") + 
+        ylab("Population")
+      print(cityPlot)
+    }
+  })
+  
+  output$lowest5CitiesPerState <- reactivePlot(function() {
+    if(length(input$states) > 0)
+    {
+      cityPopulations <- getAllCityPopulations()
+      cityPopulationSubset <- cityPopulations %>%
+        filter(StateProvinceName %in% input$states) %>%
+        group_by(StateProvinceName) %>%
+        top_n(n = -5, CityPopulation) %>%
+        select(StateProvinceName, CityName, CityPopulation, everything()) %>%
+        arrange(StateProvinceName, -CityPopulation) %>%
+        mutate(top = TRUE)
+      cityPlot <- ggplot(cityPopulationSubset, aes(x = CityName, y = CityPopulation)) + 
+        geom_bar(stat = 'identity') + 
+        facet_grid(StateProvinceName ~ ., scales = 'free', space = 'free') + 
+        coord_flip() + 
+        theme_bw() + 
+        xlab("City Name") + 
+        ylab("Population")
+      print(cityPlot)
+    }
   })
 })

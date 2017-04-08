@@ -28,8 +28,12 @@ shinyUI(fluidPage(
     
     # Show a plot of the generated distribution
     mainPanel(
+       h3(textOutput("General State Information")),
        plotOutput("generalStateInformation"),
-       plotOutput("top5CitiesPerState")
+       h3(textOutput("Top 5 Cities for each state")),
+       plotOutput("top5CitiesPerState"),
+       h3(textOutput("Bottom 5 Cities for each state")),
+       plotOutput("lowest5CitiesPerState")
     )
   )
 ))
