@@ -8,8 +8,56 @@
 #
 
 library(shiny)
+library(RODBC)
+library(ggplot2)
+library(dplyr)
+
+connectionString <- "driver=freetds;DSN=SqlServer;Database=WorldWideImporters;UID=sa;Pwd=pAssw04d"
+options(scipen=999)
+
+getAllStatePopulations <- function() {
+  dbhandle <- odbcDriverConnect(connectionString)
+  allData <- sqlQuery(dbhandle, 'select s.StateProvinceCode, s.StateProvinceName, 
+    s.LatestRecordedPopulation as StatePopulation from Application.StateProvinces s')
+  close(dbhandle)
+  allData
+}
+
+getAllCityPopulations <- function() {
+  dbhandle <- odbcDriverConnect(connectionString)
+  allData <- sqlQuery(dbhandle, 'select c.CityName, c.LatestRecordedPopulation as CityPopulation,
+  s.StateProvinceCode, s.StateProvinceName, s.LatestRecordedPopulation as StatePopulation
+  from Application.Cities c left join Application.StateProvinces s ON c.StateProvinceId = s.StateProvinceID')
+  close(dbhandle)
+  allData
+}
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
+  output$generalStateInformation <- reactivePlot(function() {
+    statePopulations <- getAllStatePopulations()
+    stateSubset <- statePopulations %>%
+      filter(StateProvinceName %in% input$states)
+    stateSubsetGraph <- qplot(data = stateSubset, x=reorder(StateProvinceName, -StatePopulation), y=StatePopulation, fill=StatePopulation, geom="blank") + coord_flip() + geom_bar(stat = "identity")
+    print(stateSubsetGraph)
+  })
   
+  output$top5CitiesPerState <- reactivePlot(function() {
+    cityPopulations <- getAllCityPopulations()
+    cityPopulationSubset <- cityPopulations %>%
+      filter(StateProvinceName %in% input$states) %>%
+      group_by(StateProvinceName) %>%
+      top_n(n = 5, CityPopulation) %>%
+      select(StateProvinceName, CityName, CityPopulation, everything()) %>%
+      arrange(StateProvinceName, -CityPopulation) %>%
+      mutate(top = TRUE)
+    cityPlot <- ggplot(cityPopulationSubset, aes(x = CityName, y = CityPopulation)) + 
+      geom_bar(stat = 'identity') + 
+      facet_grid(StateProvinceName ~ ., scales = 'free', space = 'free') + 
+      coord_flip() + 
+      theme_bw() + 
+      xlab("City Name") + 
+      ylab("Population")
+    print(cityPlot)
+  })
 })

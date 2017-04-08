@@ -8,7 +8,7 @@ getStateList <- function() {
   allData <- sqlQuery(dbhandle, 'select StateProvinceCode, StateProvinceName from Application.StateProvinces')
   close(dbhandle)
   # as.list(setNames(as.character(allData$StateProvinceCode), allData$StateProvinceName))
-  structure(as.character(allData$StateProvinceCode), names = as.character(allData$StateProvinceName))
+  structure(as.character(allData$StateProvinceName), names = as.character(allData$StateProvinceName))
 }
 
 # Define UI for application that draws a histogram
@@ -28,7 +28,8 @@ shinyUI(fluidPage(
     
     # Show a plot of the generated distribution
     mainPanel(
-       plotOutput("distPlot")
+       plotOutput("generalStateInformation"),
+       plotOutput("top5CitiesPerState")
     )
   )
 ))

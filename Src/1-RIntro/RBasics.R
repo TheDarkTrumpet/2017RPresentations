@@ -48,6 +48,14 @@ StateGraph <- qplot(data = SortedStateCounts, x=reorder(State, -Population), y=P
 ) + coord_flip() + geom_bar(stat = "identity")
 plot(StateGraph)
 
+# Subset of state population
+stateGraphSubset <- SortedStateCounts %>%
+  filter(State %in% c('Wyoming', 'Vermont', 'District of Columbia'))
+
+stateSubsetGraph <- qplot(data = stateGraphSubset, x=reorder(State, -Population), y=Population, fill=Population, geom="blank"
+) + coord_flip() + geom_bar(stat = "identity")
+plot(stateSubsetGraph)
+
 # Small introduction to DataTable
 library(data.table)
 StateCountsTable <- data.table(StateCounts)
