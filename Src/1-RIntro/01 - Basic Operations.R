@@ -12,6 +12,8 @@ myVar %% 20
 # Find help on topic
 help("+")
 help("plot")
+?help
+
 
 # Writing a function
 function(x) { x + 5 }
@@ -32,10 +34,9 @@ xm2[1,]
 
 # Get Body
 length(xm2)
-xm2Length <- length(xm2)
 xm2[-1,]
 
-d <- as.data.frame(xm2[-1,])
+d <- as.data.frame(xm2[-1,], stringsAsFactors = FALSE)
 names(d) <- xm2[1,]
 rownames(d) <- c("v1", "v2", "v3", "v4")
 
@@ -44,3 +45,9 @@ d[-2,]
 
 # Note the 1, 2 and the numbers beside them.
 summary(d)
+class(d)
+
+d$Foo
+d$Foo >= 3
+d$Foo[d$Foo >= 3]
+d[d$Foo >= 3,]
