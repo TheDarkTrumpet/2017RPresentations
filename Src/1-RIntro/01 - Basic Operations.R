@@ -1,3 +1,29 @@
+# Basic Operators
+1 + 1
+5 * 5
+20 / 5
+
+# Comparison Operators
+1 == 1
+1 > 1
+1 >= 1
+
+# Coerce Example
+"1" == 1
+typeof("1")
+typeof(1)
+
+# Equality and Coercion
+typeof(NULL)
+"" == TRUE    # FALSE
+"0" == TRUE   # FALSE
+0 == NULL     # Logical(0)
+0 == FALSE    # TRUE
+1 == TRUE     # TRUE
+"1" == TRUE   # FALSE
+"1" == FALSE  # FALSE
+"0" == TRUE   # FALSE
+
 # Assigning and Math Operations
 myVar <- 5
 myVar
@@ -24,9 +50,15 @@ xPlus5(5)
 
 # Create a data structure
 x <- c("Foo", "Bar", 1, 2, 3, 4, 5, 6, 1, 2)
+class(x)
 x[2]
 xl <- as.list(x)
+class(xl)
 xm <- matrix(x, ncol=2)
+class(xm)
+xm
+
+
 xm2 <- matrix(x, ncol=2, byrow = TRUE)
 
 # Get Headers
@@ -51,3 +83,6 @@ d$Foo
 d$Foo >= 3
 d$Foo[d$Foo >= 3]
 d[d$Foo >= 3,]
+
+
+# Library - Data.Tables
