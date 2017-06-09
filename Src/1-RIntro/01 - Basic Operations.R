@@ -107,4 +107,39 @@ df[df$City == "North Liberty",]
 dt[dt$City == "North Liberty" | dt$City == "Cedar Rapids"]
 df[df$City == "North Liberty" | df$City == "Cedar Rapids",]
 
+dt[,City]
+dt$City
+dt[,{print(City) 
+     NULL}]
+dt[,NULL]
+dt[startsWith(City, "C"), {print(City)
+    NULL}]
+dt[startsWith(City, "C")]
+dt[,startsWith(City, "C")]
+
+dt[,.(Sum = sum(Value)), by=City]
+dt[startsWith(City, "C"),.(Sum = sum(Value)), by=City]
+
+
 # Library - DPlyr
+library(dplyr)
+library(dtplyr)
+
+dt[City %in% c("North Liberty", "Cedar Rapids")]
+dt[City %in% c("North Liberty", "Cedar Rapids") & Value > 5]
+
+top1 <- df %>%
+  filter(City %in% c("North Liberty", "Cedar Rapids", "Bettendorf")) %>%
+  group_by(City) %>%
+  select(City, Value) %>%
+  top_n(n=1, Value)
+
+# Graphing
+library(ggplot2)
+myPlot <- ggplot(data = dt, aes(x=City, y=Value)) +
+  geom_bar(stat = "identity") + xlab("City") + ylab("Value") + coord_flip()
+plot(myPlot)
+
+myPlotTop <- ggplot(data = top1, aes(x=City, y=Value)) +
+  geom_bar(stat = "identity") + xlab("City") + ylab("Value") + coord_flip()
+plot(myPlotTop)
