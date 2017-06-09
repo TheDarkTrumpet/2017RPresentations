@@ -84,5 +84,27 @@ d$Foo >= 3
 d$Foo[d$Foo >= 3]
 d[d$Foo >= 3,]
 
+# Sampling information (Random)
+sample(1:10, 10)
+sample(1:10, 10, replace=TRUE)
 
 # Library - Data.Tables
+library("data.table")
+cities <- c("Iowa City", "Coralville", "North Liberty", "Cedar Rapids", "Bettendorf", "Davenport")
+dt <- data.table(Index = 1:20,
+                 Value = sample(1:10, 20, replace=TRUE),
+                 City = sample(cities, 20, replace=TRUE))
+
+df <- as.data.frame(dt)
+
+class(dt)
+class(df)
+
+dt[dt$City == "North Liberty"]
+df[df$City == "North Liberty"]  # Throws Error
+df[df$City == "North Liberty",]
+
+dt[dt$City == "North Liberty" | dt$City == "Cedar Rapids"]
+df[df$City == "North Liberty" | df$City == "Cedar Rapids",]
+
+# Library - DPlyr
