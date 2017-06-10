@@ -18,7 +18,7 @@ echo "Rstudio Server: http://localhost:8787"
 echo "Shiny Server: http://localhost:3838"
 
 echo "Restoring database backup"
-sleep 10
+sleep 20
 
 # Restore database backup
 docker run -v '/Users/dthole/Programming/r-shiny-docker/:/data/' --link mssql:mssql -it fabiang/sqlcmd -S mssql -U sa -P pAssw04d '-i/data/Data/RestoreDatabase.sql'

@@ -40,7 +40,7 @@ options(scipen=999)
 SortedStateCounts <- StateCounts[order(StateCounts$Population),]
 
 attach(StateCounts)
-SortedStateCounts <- StateCounts[order(Population)]
+SortedStateCounts <- StateCounts[order(Population),]
 detach(StateCounts)
 
 # Graph sorted by Population
@@ -97,11 +97,11 @@ Top10GraphMN <- ggplot(data = IAMNTop10[IAMNTop10$StateProvinceCode == "MN",],
 Top10GraphCA <- ggplot(data = IAMNTop10[IAMNTop10$StateProvinceCode == "CA",], 
                        aes(x=CityName, y=CityPopulation)) +
   geom_bar(stat = "identity") + xlab("City") + ylab("City Population") + coord_flip() +
-  ggplot("California")
+  ggtitle("California")
 Top10GraphTX <- ggplot(data = IAMNTop10[IAMNTop10$StateProvinceCode == "TX",], 
                        aes(x=CityName, y=CityPopulation)) +
   geom_bar(stat = "identity") + xlab("City") + ylab("City Population") + coord_flip() +
-  ggplot("Texas")
+  ggtitle("Texas")
 
 
 grid.arrange(Top10GraphIA, Top10GraphMN, Top10GraphCA, Top10GraphTX, padding=unit(1,"line"))

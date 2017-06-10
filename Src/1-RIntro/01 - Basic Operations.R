@@ -53,6 +53,7 @@ x <- c("Foo", "Bar", 1, 2, 3, 4, 5, 6, 1, 2)
 class(x)
 x[2]
 xl <- as.list(x)
+xl[2]
 class(xl)
 xm <- matrix(x, ncol=2)
 class(xm)
