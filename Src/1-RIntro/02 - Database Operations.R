@@ -106,5 +106,19 @@ Top10GraphTX <- ggplot(data = IAMNTop10[IAMNTop10$StateProvinceCode == "TX",],
 
 grid.arrange(Top10GraphIA, Top10GraphMN, Top10GraphCA, Top10GraphTX, padding=unit(1,"line"))
 
-# Add a table
-tableGrob()
+# Alternate way of graphing
+il_mn_wi_top <- allData %>%
+  filter(StateProvinceCode %in% c('IL', 'MN', 'WI')) %>%
+  group_by(StateProvinceCode) %>%
+  top_n(n = 5, CityPopulation) %>%
+  select(StateProvinceCode, CityName, CityPopulation, everything()) %>%
+  arrange(StateProvinceCode, -CityPopulation) %>%
+  mutate(top = TRUE)
+
+ggplot(il_mn_wi_top, aes(x = CityName, y = CityPopulation)) + 
+  geom_bar(stat = 'identity') + 
+  facet_grid(StateProvinceName ~ .) + 
+  coord_flip() + 
+  theme_bw() + 
+  xlab("City Name") + 
+  ylab("Population")
