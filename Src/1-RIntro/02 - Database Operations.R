@@ -1,5 +1,8 @@
 install.packages("plyr")
 install.packages("ggplot2")
+install.packages("gridExtra")
+install.packages("dtplyr")
+install.packages("dplyr")
 install.packages("RODBC")
 
 library(plyr)
